@@ -1,0 +1,26 @@
+public class Solution {
+    public int CompareVersion(string version1, string version2) {
+        
+        //Here we need to split the numbers and convert them to Int32 and then compare
+        
+        string [] version1Split= version1.Split ('.');
+        string [] version2Split= version2.Split('.');
+        
+        int maxLen= Math.Max(version1Split.Length, version2Split.Length);
+        
+        for(int i=0; i< maxLen; i++)
+        {
+            int v1= (i>= version1Split.Length)? 0: Convert.ToInt32(version1Split[i]);
+            int v2= (i>= version2Split.Length)? 0: Convert.ToInt32(version2Split[i]);
+            
+            if(v1!=v2)
+            {
+                if(v1> v2) return 1;
+                
+                return -1;
+            }
+        }
+        
+        return 0;
+    }
+}

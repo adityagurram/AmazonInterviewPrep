@@ -1,0 +1,73 @@
+public class Solution {
+    public string MinWindow(string s, string t) {
+        
+        if(s==null || t==null || s.Length==0 || t.Length ==0) return "";
+        
+        Dictionary<char,int> dict= new Dictionary<char,int > ();
+        
+        foreach (char c in t)
+        {
+            if(!dict.ContainsKey(c))
+            {
+                dict. Add (c, 1);
+            }
+            else
+            {
+                dict[c]++;
+            }
+        }
+        
+        int windowStart=0;
+        int windowEnd=0;
+        bool found= false;//to keep track and return the substring only if found
+        int count= dict.Count ();//only if all chars are done
+        
+        int min= s.Length;//to update the curr min
+        int left=0;
+        int right= s.Length -1;
+        
+        while (windowEnd < s.Length )
+        {
+            char currChar= s[windowEnd++];
+            if(dict.ContainsKey(currChar))
+            {
+                dict[currChar]--;
+                if(dict[currChar]==0) count --;// we are done with that char
+            }
+            
+            if(count > 0) continue;
+            
+            while (count ==0)//shrinking the window 
+            {
+                char startChar=s[windowStart++];
+                if(dict.ContainsKey(startChar))
+                {
+                    dict[startChar]++;
+                    if(dict[startChar]>0) count ++;
+                }
+               
+            }
+            
+            //We found the solution so lets keep track of the start, end index of that solution
+            
+            if(windowEnd-windowStart < min)
+            {
+                min= Math.Min(windowEnd-windowStart , min);
+                left= windowStart;
+                right = windowEnd;
+                found= true;
+            }
+            
+          
+        }
+        
+        if(found)
+        {
+            return s.Substring(left -1, min+1);
+        }
+        
+        
+        return "";
+        
+    }
+}

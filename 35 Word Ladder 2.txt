@@ -1,0 +1,129 @@
+public class Solution {
+    IList<IList<string>>result = new List<IList<string>> ();
+    public IList<IList<string>> FindLadders(string beginWord, string endWord, IList<string> wordList) {
+        
+        HashSet<string> set= new HashSet<string> ();
+        bool isPresent=false;
+        
+        foreach (string s in wordList)
+        {
+            if(!set.Contains (s))
+            {
+                set. Add (s);
+            }
+            
+            if(s== endWord)
+            {
+                isPresent=true;
+            }
+        }
+        
+        if(isPresent == false)
+        {
+            return result;
+        }
+        
+        Queue<string> q= new Queue<string> ();
+        q.Enqueue (beginWord);
+        
+        Dictionary<string, int> visited= new Dictionary<string, int> ();
+        Dictionary<string, List<string>> adjList= new Dictionary<string, List<string>> ();
+        visited. Add (beginWord, 0);
+        while (q.Count () > 0)
+        {
+            int qCount= q.Count ();
+            
+            for(int i=0; i< qCount; i++)
+            {
+                string temp= q.Dequeue ();
+                for(int j=0; j< temp.Length; j++)
+                {
+                    char[] cArray= temp.ToCharArray();
+                    char c1= cArray[j];
+                    
+                    for(char c='a'; c<='z'; c++)
+                    {
+                        cArray[j]=c;
+                        
+                        string newWord= new string(cArray);
+                        if(newWord== temp)
+                        {
+                            continue;
+                        }
+                        
+                        if(!set.Contains (newWord))
+                        {
+                            continue;
+                        }
+                        
+                        
+                       if (!visited.ContainsKey(newWord))
+                            {
+                                q.Enqueue(newWord);
+                                visited.Add(newWord, visited[temp] + 1);
+
+                                if (adjList.ContainsKey(temp))
+                                {
+                                    adjList[temp].Add(newWord);
+                                }
+                                else
+                                {
+                                    List<string> t = new List<string>();
+                                    t.Add(newWord);
+                                    adjList.Add(temp, t);
+                                }
+
+                            }
+                            else if (visited[newWord] == visited[temp] + 1)
+                            {
+                                if (adjList.ContainsKey(temp))
+                                {
+                                    adjList[temp].Add(newWord);
+                                }
+                                else
+                                {
+                                    List<string> t1 = new List<string>();
+                                    t1.Add(newWord);
+                                    adjList.Add(temp, t1);
+                                }
+                            }
+                    }
+                    cArray[j]=c1;
+                }
+            }
+        }
+        
+        List<string> path= new List<string> ();
+        DFS(beginWord, endWord,ref adjList, ref path);
+        
+        return result;
+        
+        
+    }
+    
+    
+    private void DFS(string begin, string end, ref Dictionary<string, List<string>> adjList,  ref List<string> path  )
+    {
+        path.Add (begin);
+        
+        if(begin== end)
+        {
+            result. Add (new List<string> (path));
+            path.RemoveAt (path.Count () -1);
+            return;
+        }
+        
+        if(adjList.ContainsKey (begin))
+        {
+            foreach (string node in adjList[begin])
+            {
+                DFS (node, end, ref adjList, ref path);
+            }
+        }
+        
+        path.RemoveAt(path.Count () -1);
+        return;
+        
+        
+    }
+}

@@ -1,0 +1,44 @@
+public class Solution {
+    public string MostCommonWord(string paragraph, string[] banned) {
+        
+    string newParagraph = paragraph.Replace("!", " ").Replace("?", " ").Replace(",", " ").Replace(";",  " ").Replace(".", " ").Replace("'", " ");
+
+        
+        string [] splitPara= newParagraph.Split (' ');
+        
+        List<string> bannedList= banned.ToList();
+        Dictionary < string, int> dict= new Dictionary<string, int > ();
+        
+        foreach (string s in splitPara)
+        {
+            string newS= s.ToLower().Trim();
+            if(!dict.ContainsKey(newS))
+            {
+                dict. Add (newS, 1);
+            }
+            else
+            {
+                dict[newS]++;
+            }
+        }
+        
+        int max=0;
+        string result= string .Empty;
+        foreach (string key in dict.Keys)
+        {
+            if( bannedList.Contains (key))
+            {
+                continue;
+            }
+            
+            if(key.Length > 0 && dict[key] > max)
+            {
+                max= dict[key];
+                result= key;
+            }
+        }
+        
+        return result;
+        
+    }
+}

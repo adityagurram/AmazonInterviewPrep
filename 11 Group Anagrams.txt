@@ -1,0 +1,38 @@
+public class Solution {
+    public IList<IList<string>> GroupAnagrams(string[] strs) {
+     
+        List<IList<string>> result= new List<IList<string>> ();
+        Dictionary<string, List<string> >dict= new Dictionary<string, List<string>>();
+        
+        foreach (string str in strs)
+        {
+            char[] currChars= str.ToCharArray();
+            Array.Sort(currChars);
+            String sortedString= new String(currChars);
+            if(!dict.ContainsKey(sortedString))
+            {
+                List<string> temp= new List<string> ();
+                temp.Add (str);
+                dict. Add (sortedString, temp);
+            }
+            else
+            {
+                List<string> newTemp= dict[sortedString];
+                newTemp.Add (str);
+                dict. Remove (sortedString);
+                dict. Add (sortedString,newTemp );
+            }
+        }
+        
+        //We have everything in the dict
+        
+        foreach (string key in dict.Keys)
+        {
+            List<string> tempResult= dict[key];
+            result.Add (tempResult);
+            
+        }
+        
+        return result;
+    }
+}

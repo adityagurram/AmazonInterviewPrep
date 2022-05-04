@@ -1,0 +1,52 @@
+public class Solution {
+    
+    string [] Ones= new string []{"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    
+        string [] Tens= new string []{"","", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    
+    string [] Thousands = new string [] {"","Thousand","Million", "Billion" };
+    
+    public string NumberToWords(int num) {
+        
+        if(num==0) return "Zero";
+        
+        int index=0;
+        StringBuilder sb= new StringBuilder ();
+        
+        while (num > 0)
+        {
+            if(num %1000 !=0)
+            {
+                StringBuilder temp= new StringBuilder ();
+                helper (temp, num % 1000);
+                sb.Insert(0, temp.Append (Thousands[index]).Append (" "));
+            }
+            
+            index++;
+            num= num /1000;
+        }
+        
+        return sb.ToString(). Trim();
+    }
+    
+    public void helper(StringBuilder sb, int num)
+    {
+        if(num==0) return ;
+        
+        else if (num < 20)
+        {
+            sb.Append (Ones[num]).Append (" ");
+        }
+        
+        else if (num  <100)
+        {
+            sb.Append (Tens[num /10 ]).Append (" ");
+            helper (sb, num %10);
+        }
+        else
+        {
+            sb.Append (Ones [num /100]).Append (" Hundred ");
+            helper (sb, num %100);
+        }
+    }
+}

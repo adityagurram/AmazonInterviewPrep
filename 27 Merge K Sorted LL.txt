@@ -1,0 +1,83 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        
+        if(lists==null || lists.Length ==0)
+        {
+            return null;
+        }
+        return  Merge(lists, 0, lists.Length -1);
+        
+        }
+    
+    private ListNode Merge(ListNode[] lists, int start, int end)
+    {
+        if(start==end)
+        {
+            return lists[start];
+        }
+        
+        int mid = start + (end - start)/2;
+        
+        ListNode first= Merge (lists, start, mid);
+        ListNode second = Merge (lists, mid+1, end);
+        
+        return helper (first, second);
+    }
+    
+    private ListNode helper(ListNode first, ListNode second)
+    {
+        ListNode result= new ListNode ();
+        ListNode dummy= result;
+        
+        int newVal=0;
+        while (first!=null && second !=null)
+        {            
+            if(first.val <= second.val)
+            {
+                newVal= first.val;
+                 first= first.next;
+            }
+            else
+            {
+                newVal= second.val;
+                 second= second.next;
+            }
+            
+            ListNode newNode= new ListNode ();
+            newNode.val= newVal;
+            dummy.next= newNode;
+            dummy= newNode;
+        }
+        while (first!=null)
+        {
+            ListNode newNode= new ListNode ();
+            newNode.val= first.val;
+            dummy.next= newNode;
+            dummy= newNode;   
+            first= first.next;
+        }        
+        while (second!=null)
+        {
+            ListNode newNode= new ListNode ();
+            newNode.val= second.val;
+            dummy.next= newNode;
+            dummy= newNode;   
+            second= second.next;
+        }        
+        return result.next;        
+        
+    }
+    }
+    
+    
