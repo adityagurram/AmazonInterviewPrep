@@ -1,0 +1,13 @@
+select 
+    max(temp.Salary) as [SecondHighestSalary]
+from (
+select salary, dense_rank () over (order by salary desc) as [Rank]
+FROM Employee
+  ) as temp
+  where temp.Rank > 1
+
+---------------------------------------------------------------------------------------->
+
+Select Max(Salary) as SecondHighestSalary
+From Employee
+where Salary < (Select Max(Salary) from Employee)

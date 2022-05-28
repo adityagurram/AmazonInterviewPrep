@@ -1,0 +1,66 @@
+public class Solution {
+    public bool IsMatch(string s, string p) {
+        
+        if(p=="*") return true;
+        
+        //This is a DP problem as we have subproblems of finding each substring to match the pattern
+        
+        bool [][] table = new bool [s.Length +1][];
+        
+        for(int i=0; i<= s.Length ; i++)
+        {
+            table [i]= new bool [p.Length +1];
+        }
+        
+        //now lets fillup the base conditions
+        
+        table [0][0]=true;// empty vs empty matches
+        
+        for(int i=1; i<table.Length ;i++)
+        {
+           table [i][0]=false;      // empty patter vs any alphabetic lower case eng letters doesnot match      
+        }
+        
+        for(int j=1; j< table[0].Length ; j++ )
+        {
+            //this is the case for a* or a*b* where zero occurences will match empty string
+            if(p[j-1]=='*')
+            {
+                   table [0][j]= table [0][j-2]; // simple * unte j-2 lo check cheyali
+            }
+         
+        }
+        
+        for(int i=1; i< table.Length ; i++)
+        {
+            for(int j=1; j<table [i].Length ; j++)
+            {
+               
+                 if (p[j-1] == s[i-1] || p[j-1]=='.' )
+                {
+                    table [i][j]= table [i-1][j-1]; // same for . in both wild vs regex
+                }
+                else if(p[j-1]=='*') // this is the tricky case
+                {
+                
+                 table [i][j]=   table [i][j-2];// considering asterix as ""
+                 
+                
+                     if(s[i-1]== p[j-2] || p[j-2]=='.')// tricky one bcz if you're consiering the char in the pattern, u need to look top which is table[i-1][j] onlyif the chars match in s, p
+                         //j-2 is imp
+                         
+                         table [i][j] =  table [i][j] || table [i-1][j];
+                 
+                }
+                else
+                {
+                     table [i][j]=false; // same for both wild vs regex
+                }
+            }
+        }
+        
+        return table[s.Length][p.Length];
+        
+        
+    }
+}

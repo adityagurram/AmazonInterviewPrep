@@ -1,0 +1,77 @@
+public class Solution {
+    int timestamp=0;
+    public bool CanFinish(int numCourses, int[][] prerequisites) {
+        
+        int [] visited = new int [numCourses];
+        int [] arrival= new int [numCourses];
+        int [] departure = new int [numCourses];
+        
+        //AdjList
+        Dictionary<int, List<int>> adjList= new Dictionary<int, List<int>> ();
+        
+        for(int i=0; i< numCourses; i++)
+        {
+            visited[i]=-1;
+            arrival[i]=-1;
+            departure [i]=-1;
+            
+        }
+        
+        foreach (int [] arr in prerequisites)
+        {
+            int v1= arr[0];
+            int v2= arr[1];
+            
+            if(!adjList.ContainsKey (v2))
+            {
+                adjList. Add (v2, new List<int>());
+                adjList[v2]. Add (v1);
+            }
+            else
+            {
+                adjList[v2]. Add (v1);
+            }
+        }
+        
+        for(int v=0; v< numCourses; v++)
+        {
+            if(visited[v]==-1)
+            {
+                if(DFSHelper (v, ref arrival, ref departure, ref visited, ref adjList))
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    
+    private bool DFSHelper (int node, ref int [] arrival, ref int [] departure, ref int [] visited, ref  Dictionary<int, List<int>> adjList)
+    {
+        visited[node]=1;
+        arrival[node]= timestamp++;
+        if(adjList.ContainsKey (node))
+        {
+            foreach (int n in adjList[node])
+            {
+                if(visited[n]==-1)
+                {
+                     if(DFSHelper (n, ref arrival, ref departure, ref visited, ref adjList)== true)
+                      {
+                          return true;
+                      }
+                }
+                else if(departure [n]==-1)
+                {
+                    return true;
+                }
+                    
+             
+            }
+        }
+        departure [node]= timestamp++;
+        return false;//cycle not found
+    }
+}

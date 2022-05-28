@@ -1,0 +1,138 @@
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+}
+*/
+
+public class Solution {
+    public Node Connect(Node root) {
+     
+        if(root==null)
+        {
+             return root;            
+        }
+        
+        Node head=root;
+       while (head !=null)
+       {
+           Node dummy= new Node();
+           Node temp= dummy;
+           //BFS
+               while (head !=null)//this is going in a level, visisting all nodes
+               {
+                    if(head.left !=null)
+                    {
+                        temp.next= head.left;
+                        temp= temp.next;
+                    }
+
+                   if(head .right !=null)
+                   {
+                       temp.next= head.right;
+                       temp= temp.next;
+                   }
+                   head= head.next;
+               }
+           //BFS
+           head= dummy.next;//this is going level by level
+       }
+        
+        return root;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+}
+*/
+
+public class Solution {
+    public Node Connect(Node root) {
+     
+        if(root==null)
+        {
+             return root;
+            
+        }
+        
+        //Now what should we do
+        
+        Node curr= root;
+        Node BFSNext= curr.left;
+        
+        while (curr !=null && BFSNext!=null)
+        {
+            curr.left.next= curr.right;
+            
+            //Here we need to write code to connect 5 to 6
+            if(curr.next!=null)//when the curr is at 2 and we would have linked 2->3 in the above step
+            {
+                //if the 2->3 is connected use this link to get 6 node
+                curr.right.next= curr.next.left;
+            }
+            
+            curr= curr.next;
+            if(curr==null)
+            {
+                curr= BFSNext;
+                BFSNext= curr.left;
+            }
+        }
+        
+        return root;
+    }
+}

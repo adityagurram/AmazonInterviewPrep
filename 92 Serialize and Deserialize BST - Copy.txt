@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    public List<string> treeData= new List<string> ();
+    int index=0;
+    // Encodes a tree to a single string.
+    public string serialize(TreeNode root) {        
+        helper (root);
+        return string.Join (",", treeData);
+    }
+    
+    private void helper (TreeNode root)
+    {
+        if(root==null)
+        {
+            treeData.Add ("N");
+            return;
+        }
+        treeData.Add (root.val.ToString());
+        helper (root.left);
+        helper (root.right);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(string data) {        
+        string [] array= data.Split (','); 
+      
+        return helper (array);
+    }
+    
+    private TreeNode helper (string [] array)
+    {
+        //base condition 
+        if(index==array.Length)
+         {
+              return null;
+         }
+        if(array[index]=="N")
+        {
+            index++;
+            return null;
+        }
+        
+        TreeNode node= new TreeNode (Convert.ToInt32(array[index]));   
+        index++;
+        node.left= helper ( array);
+        node.right= helper ( array);
+        return node;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// TreeNode ans = deser.deserialize(ser.serialize(root));

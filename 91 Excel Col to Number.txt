@@ -1,0 +1,21 @@
+public class Solution {
+    public int TitleToNumber(string columnTitle) {
+        
+        //here we need to start from the end and get the number of the char using str[i]-'A' + 1
+        //then when we loop thru next multiply the factor with 26
+        
+        int result=0;
+        int factor=1;
+        
+        char [] array= columnTitle.ToCharArray();
+        
+        for(int i= array.Length -1 ; i>=0; i--)
+        {
+            result= result + factor * (array[i]- 'A' + 1);
+            
+            factor= factor*26;
+        }
+        
+        return result;
+    }
+}

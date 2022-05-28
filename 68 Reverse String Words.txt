@@ -1,0 +1,85 @@
+public class Solution {
+    public string ReverseWords(string s) {
+        
+       
+     //Lets do the easiest way
+        
+   StringBuilder sb= new StringBuilder ();
+    string [] arr= s.Split (' ');
+        
+        for (int i= arr.Length -1; i>=0; i--)
+        {
+            if(arr[i].Length ==0)
+            {
+                 continue;
+            }
+            sb.Append (arr[i] + " ");
+            
+        }
+        
+        return sb.ToString().Trim();
+        
+}
+}
+
+
+
+
+
+
+public class Solution {
+    public string ReverseWords(string s) {
+        
+       
+     
+        
+        string [] strArr= s.Split(' ');
+        List<string> strArray= strArr.ToList();
+        int start=0;
+        int end= strArray.Count () -1;
+        
+        while (start < end)
+        {
+            string s1= strArray[start];
+            string s2= strArray[end];
+            
+            if(s1.Length ==0)
+            {
+               // strArray.RemoveAt(start);
+                start ++;
+            }
+            
+            if(s2.Length ==0)
+            {
+               // strArray.RemoveAt(end);
+                end --;
+            }
+            
+            if(s1.Length > 0 && s2.Length >0  )
+            {
+                swap(ref strArray, start, end);
+                start ++;
+                end --;
+            }
+            
+        }
+        StringBuilder sb= new StringBuilder ();
+        
+        foreach (string str in strArray)
+        {
+            if(str.Length ==0)
+            {
+                continue;
+            }
+           sb.Append (str + " ");
+        }
+        return sb.ToString().Trim();
+    }
+    
+    private void swap(ref List<string> strArray, int i, int j)
+    {
+        string temp= strArray[i].Trim ();
+        strArray[i]= strArray[j].Trim();
+        strArray[j]= temp;
+    }
+}

@@ -1,0 +1,32 @@
+public class Solution {
+    public int CoinChange(int[] coins, int amount) {
+        
+        
+        int [] table = new int [amount + 1];
+        for(int i=0; i< table.Length ; i++)
+        {
+            table [i]=Int32.MaxValue;
+        }
+        table [0]=0;
+        
+        for(int i=1; i<=amount ; i++)
+        {
+            foreach (int coin in coins)
+            {
+                if(i-coin >=0)
+                {
+                    table [i]= Math. Min (table [i], table [i-coin]);
+                    //finding which is min out of all the coins                   
+                }
+                
+               
+            }
+            if(table [i]!=Int32.MaxValue)// this means we found something from using those coins so updating the counts
+                {
+                     table [i]++;//This is the curr count like using this coin
+                }
+        }
+        
+        return table [amount] == Int32.MaxValue? -1 : table [amount];
+    }
+}

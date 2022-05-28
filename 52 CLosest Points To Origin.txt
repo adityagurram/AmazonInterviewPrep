@@ -1,0 +1,45 @@
+public class Coordinate
+{
+    public int x;
+    public int y;
+    
+    public Coordinate(int x, int y)
+    {
+        this.x= x;
+        this.y=y;
+    }
+}
+public class Solution {
+    public int[][] KClosest(int[][] points, int k) {
+        List<List<int>> result= new List<List<int>> ();
+        
+        Dictionary<Coordinate, double> dict= new Dictionary<Coordinate, double> ();
+        foreach (int [] arr in points)
+        {
+            int xc= arr[0];
+            int yc= arr[1];
+            
+            double distance= Math. Sqrt(xc*xc + yc*yc);
+            
+            dict.Add (new Coordinate (xc, yc), distance);
+            
+        }
+        
+        // Ideally we need Priority Queue for better performance
+        
+        var ordered= dict. OrderBy(x=>x.Value).ToDictionary(x=> x.Key, y=> y.Value);
+        
+        foreach (var key in ordered.Keys)
+        {
+            if(k==0)
+            {
+                 return result.Select (list=> list.ToArray()).ToArray();
+            }
+            
+            result.Add (new List<int> (){key.x, key.y});
+            k--;
+        }
+        
+       return result.Select (list=> list.ToArray()).ToArray();
+    }
+}

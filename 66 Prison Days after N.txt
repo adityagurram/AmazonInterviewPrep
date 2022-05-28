@@ -1,0 +1,53 @@
+public class Solution {
+    public int[] PrisonAfterNDays(int[] cells, int n) {
+        int [] temp= new int [cells.Length];
+        
+       List<string> memo= new List<string> ();
+       int cellsLen= cells.Length;
+        while (n>0)
+        {
+            //bcz first and last cells always 0 acc to conditions
+            temp=getNextState(cells);
+            
+            if(memo.Contains (string.Join (",", temp)))
+            {
+                break;//once cycle is found we break the loop.
+            }
+            else
+            {
+                memo.Add (string.Join (",", temp));
+            }
+            
+            Array.Copy(temp, cells, cellsLen);
+            
+            n--;
+        }
+        
+        //we check how many remaining and take the mod of the repetitions.
+        //Run the next state those many times to see the final result
+        
+            n= n % memo.Count ();
+            while (n > 0)
+            {
+                cells = getNextState(cells);
+                n--;
+            }
+        return cells;
+    }
+    private int[] getNextState(int[] cells)
+        {
+            var length = cells.Length;
+            // default is zero - vacant 
+            var nextDayCells = new int[length]; 
+
+            for (int i = 1; i < length - 1; i++)
+            {
+                if (cells[i - 1] == cells[i + 1])
+                {
+                    nextDayCells[i] = 1;
+                }
+            }
+
+            return nextDayCells;
+        }
+}

@@ -1,0 +1,273 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ *Approach 1 by reversing LL/
+public class Solution {
+    public ListNode AddTwoNumbers(ListNode l1, ListNode l2) {
+        
+        //This problem can be solved using two approaches
+        //1. Reverse the linkedlist and then add
+        //2. Put the elements in the stack and read one by one and create new list
+        //3. Lets achieve this using both the methods
+        ListNode revl1= ReverseLL(l1);
+        ListNode revl2= ReverseLL (l2);
+        
+        int carry =0;
+        
+        ListNode result= new ListNode();
+        if(revl1==null && revl2== null ) return null;
+        
+        if(revl1==null && revl2!=null) return revl2;
+        if(revl1!=null && revl2==null) return revl1;
+    
+        ListNode dummy= result;
+        while (revl1!=null && revl2!=null)
+        {
+            int num1= revl1.val;
+            int num2= revl2.val;
+            int sum=0;
+            if((num1 + num2 + carry) >9)
+            {
+             
+             sum= (num1 + num2 + carry) %10;  
+             carry= 1;
+            }
+            else
+            {
+               
+                sum= num1+ num2+ carry;
+                 carry =0;
+            }
+            
+            ListNode newNode= new ListNode ();
+            newNode.val=sum;
+            result.next= newNode;
+            result= newNode;
+           
+            revl1= revl1.next;
+            revl2= revl2.next;
+        }
+        
+        
+        while (revl1!=null)
+        {
+             ListNode newNode= new ListNode ();
+            int sum=0;
+            if(revl1.val + carry > 9)
+            {
+                sum= (revl1.val + carry )%10;
+                carry=1;
+            }
+            else
+            {
+                sum= revl1.val + carry;
+                carry =0;
+            }
+            newNode.val= sum;
+            result.next= newNode;
+            result= newNode;
+            revl1= revl1.next;
+        }
+        
+       while (revl2!=null)
+        {
+             ListNode newNode= new ListNode ();
+            int sum=0;
+            if(revl2.val + carry > 9)
+            {
+                sum= (revl2.val + carry )%10;
+                carry=1;
+            }
+            else
+            {
+                sum= revl2.val + carry;
+                carry =0;
+            }
+            newNode.val= sum;
+            result.next= newNode;
+            result= newNode;
+            revl2= revl2.next;
+        }
+        
+        if(carry==1)
+        {
+              ListNode newNode= new ListNode ();
+            newNode.val= 1;
+            result.next= newNode;
+            result= newNode;
+            
+        }
+        
+        return ReverseLL(dummy.next);
+    }
+    
+    private ListNode ReverseLL(ListNode curr)
+    {
+        ListNode prev=null;
+        while (curr!=null)
+        {         
+            ListNode temp= curr.next; 
+            curr.next=prev;
+            prev=curr;
+            curr= temp;   
+        }
+        return prev;
+       
+    }
+}
+
+
+
+
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ Approach22222 using stack*/
+public class Solution {
+    public ListNode AddTwoNumbers(ListNode l1, ListNode l2) {
+        
+        //This problem can be solved using two approaches
+        //1. Reverse the linkedlist and then add
+        //2. Put the elements in the stack and read one by one and create new list
+        //3. Lets achieve this using both the methods
+        
+           if(l1==null && l2== null ) return null;
+        
+        if(l1==null && l2!=null) return l2;
+        if(l1!=null && l2==null) return l1;
+        
+        
+      Stack<ListNode> s1= new Stack<ListNode> ();
+      Stack<ListNode> s2= new Stack<ListNode> ();
+        
+    while (l1!=null)
+    {
+        s1.Push (l1);
+        l1= l1.next;
+    }
+        
+    while (l2!=null)
+    {
+        s2.Push (l2);
+        l2= l2.next;
+    }
+        
+      
+       
+        int carry =0;
+        
+        ListNode result= new ListNode();
+     
+    
+        ListNode dummy= result;
+        while (s1.Count () >0 && s2.Count () > 0)
+        {
+            ListNode num1= s1.Pop();
+            ListNode num2= s2.Pop();
+            int sum=0;
+            if((num1.val + num2.val + carry) >9)
+            {
+             
+             sum= (num1.val + num2.val + carry) %10;  
+             carry= 1;
+            }
+            else
+            {               
+                sum= num1.val+ num2.val+ carry;
+                 carry =0;
+            }
+            
+            ListNode newNode= new ListNode ();
+            newNode.val=sum;
+            result.next= newNode;
+            result= newNode;
+          
+        }
+        
+        
+        while (s1.Count ()>0)
+        {
+             ListNode newNode= new ListNode ();
+            int sum=0;
+            ListNode pNode= s1.Pop();
+            if( pNode.val+ carry > 9)
+            {
+                sum= (pNode.val  + carry )%10;
+                carry=1;
+            }
+            else
+            {
+                sum= pNode.val  + carry;
+                carry =0;
+            }
+            newNode.val= sum;
+            result.next= newNode;
+            result= newNode;
+           
+        }
+        
+        while (s2.Count ()>0)
+        {
+             ListNode newNode= new ListNode ();
+            int sum=0;
+            ListNode pNode= s2.Pop();
+            if( pNode.val+ carry > 9)
+            {
+                sum= (pNode.val  + carry )%10;
+                carry=1;
+            }
+            else
+            {
+                sum= pNode.val  + carry;
+                carry =0;
+            }
+            newNode.val= sum;
+            result.next= newNode;
+            result= newNode;
+           
+        }
+        
+        if(carry==1)
+        {
+              ListNode newNode= new ListNode ();
+            newNode.val= 1;
+            result.next= newNode;
+            result= newNode;
+            
+        }
+        
+        return ReverseLL(dummy.next);
+    }
+      private ListNode ReverseLL(ListNode curr)
+    {
+        ListNode prev=null;
+        while (curr!=null)
+        {         
+            ListNode temp= curr.next; 
+            curr.next=prev;
+            prev=curr;
+            curr= temp;   
+        }
+        return prev;
+       
+    }
+  
+}
+

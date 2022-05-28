@@ -1,0 +1,123 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode GetIntersectionNode(ListNode headA, ListNode headB) {
+        
+        //two approaches
+        //1. get the size differences and start at equal distance and traverse
+        
+        //2. fast and slow pointer. Since there is no cycle here, when one pointer reaches end and assign that to second LL and vice versa
+        
+        if(headA==null || headB==null)
+        {
+             return null;
+        }
+         
+        ListNode a_ptr= headA;
+        ListNode b_ptr= headB;
+        int c1=0;
+        while (a_ptr!=null)
+        {
+             c1++;
+            a_ptr= a_ptr.next;
+        }
+        
+        int c2=0;
+        while (b_ptr!=null)
+        {
+            c2++;
+            b_ptr= b_ptr.next;
+            
+        }
+       
+         a_ptr= headA;
+         b_ptr= headB;
+        if(c1> c2)
+        {
+            int diff = c1-c2;
+            while(diff>0)
+            {
+                a_ptr= a_ptr.next;
+                
+                diff--;
+            }
+        }
+        else if (c1<c2)
+        {
+            
+              int diff = c2-c1;
+            while(diff>0)
+            {
+                b_ptr= b_ptr.next;
+                
+                diff--;
+            }
+        }
+       
+        while (a_ptr!= b_ptr)
+        {
+            a_ptr= a_ptr.next;
+            b_ptr= b_ptr.next;
+        }
+        
+        return a_ptr;
+    }
+
+
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode GetIntersectionNode(ListNode headA, ListNode headB) {
+        
+        //two approaches
+        //1. get the size differences and start at equal distance and traverse
+        
+        //2. fast and slow pointer. Since there is no cycle here, when one pointer reaches end and assign that to second LL and vice versa
+        
+        if(headA==null || headB==null)
+        {
+             return null;
+        }
+         
+        ListNode a_ptr= headA;
+        ListNode b_ptr= headB;
+        
+        while(a_ptr!=b_ptr)
+        {
+            if(a_ptr==null)
+            {
+                a_ptr= headB;
+            }
+            else
+            {
+                a_ptr= a_ptr.next;
+            }
+            
+             if(b_ptr==null)
+            {
+                b_ptr= headA;
+            }
+            else
+            {
+                b_ptr= b_ptr.next;
+            }
+        }
+        return a_ptr;
+    }
+}
+}

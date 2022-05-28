@@ -1,0 +1,105 @@
+public class Tree
+{
+    public int x;
+    public int y;
+    public int val;
+    
+    public Tree(int x , int y, int val)
+    {
+        this.x=x;
+        this.y= y;
+        this.val= val;
+    }
+}
+
+public class Solution 
+{
+    public int CutOffTree(IList<IList<int>> forest) 
+    {        
+        var f = forest.Select(x => x.ToArray()).ToArray();
+        if(f[0][0] == 0)
+        {
+            return -1;
+        }
+                
+        List<Tree> trees = new List<Tree>();
+        for(int i = 0; i < f.Length; i++)
+        {
+            for(int j = 0; j < f[i].Length; j++)
+            {
+                if(f[i][j] > 1)
+                {
+                    trees.Add(new Tree(i, j, f[i][j]));
+                }
+            }
+        }
+        
+        trees = trees.OrderBy(x => x.val).ToList();
+        int steps = 0;
+        int fromx = 0, fromy = 0;
+        f[fromx][fromy] = 1;
+    
+        foreach(Tree tree in trees)
+        {
+            int currentStep = findMinSteps(f, fromx, fromy, tree.x, tree.y);
+            if(currentStep == -1)
+            {
+                return -1;
+            }
+            
+            fromx = tree.x;
+            fromy = tree.y;
+            
+            // cut the tree
+            f[fromx][fromy] = 1;
+            steps += currentStep;
+        }        
+        
+        return steps;
+    }
+    
+    
+    private int findMinSteps(int[][] f, int fromx, int fromy,  int tx, int ty ) 
+    {        
+        
+        Queue<Tree> q = new Queue<Tree>();
+        int[,] directions = new int[,]{ {-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        bool[,] visited = new bool[f.Length, f[0].Length];
+                
+        q.Enqueue(new Tree(fromx, fromy, 0));        
+        visited[fromx, fromy] = true;
+        int walks = 0;
+                
+        while(q.Count > 0)
+        {
+            int count = q.Count;
+            for(int i = 0; i < count; i++)
+            {
+               Tree temp = q.Dequeue();  
+                if(temp.x == tx && temp.y == ty)
+                {
+                    return walks;
+                }               
+                
+               // int h = f[x][y];                
+
+                for(int d = 0; d <4; d++)
+                {
+                    int newx = fromx + directions[d, 0];
+                    int newy = fromy + directions[d, 1];
+
+                    if(newx >= 0 && newy >= 0 && newx < f.Length && newy < f[0].Length
+                       && !visited[newx, newy] 
+                       && f[newx][newy] != 0)
+                    {                    
+                        visited[newx, newy] = true;
+                        q.Enqueue(new Tree(newx, newy, 0));
+                    }                   
+                }                                  
+            }
+            walks++;
+        }       
+       
+        return -1;
+    }
+}

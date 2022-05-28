@@ -1,0 +1,45 @@
+public class Solution {
+    List<string> result= new List<string> ();
+    public IList<string> GenerateParenthesis(int n) {
+        
+        if(n==1)
+        {
+            result. Add ("()");
+            return result;
+        }
+        
+        List<char> slate= new List<char> ();
+        helper(0, n*2, slate, 0, 0);
+        
+        return result;
+        
+    }
+    
+    private void helper (int index, int len, List<char> slate, int left, int right)
+    {
+        
+        if(right > left)
+        {
+            return;
+        }
+        if(index==len && right == left)
+        {
+            string temp = new string (slate.ToArray ());
+            result. Add (temp);
+            return;
+        }
+        
+        if(index == len && left !=right)
+        {
+             return;
+        }
+        
+        slate. Add ('(');
+        helper (index +1, len, slate, left +1 , right);
+        slate. RemoveAt(slate.Count () -1);
+        
+        slate. Add (')');
+        helper (index +1, len, slate, left  , right+1);
+        slate. RemoveAt(slate.Count () -1);
+    }
+}

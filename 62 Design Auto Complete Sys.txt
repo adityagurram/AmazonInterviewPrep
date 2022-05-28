@@ -1,0 +1,121 @@
+ public class AutocompleteSystem
+    {
+
+        public class TrieNode : IComparable<TrieNode>
+        {
+            public TrieNode[] children;
+            public string s;
+            public List<TrieNode> hot;
+            public int times;
+
+            public TrieNode()
+            {
+                children = new TrieNode[128];
+                s = string.Empty;
+                hot = new List<TrieNode>();
+                times = 0;
+            }
+
+            public int CompareTo(TrieNode o)
+            {
+                if (this.times == o.times)
+                {
+                    return this.s.CompareTo(o.s);
+                }
+
+                return o.times - this.times;
+            }
+
+            public void Update(TrieNode node)
+            {
+                if (!this.hot.Contains(node))
+                {
+                    this.hot.Add(node);
+                }
+
+                hot.Sort();
+
+                if (hot.Count() > 3)
+                {
+                    hot.RemoveAt(hot.Count() - 1);
+                }
+            }
+
+        }
+
+        public TrieNode root;
+        public StringBuilder sb;
+        public TrieNode curr;
+        public AutocompleteSystem(string[] sentences, int[] times)
+        {
+
+            root = new TrieNode();
+            curr = root;
+            sb = new StringBuilder();
+
+            for (int i = 0; i < sentences.Length; i++)
+            {
+                Add(sentences[i], times[i]);
+            }
+        }
+
+        public void Add(string sentence, int time)
+        {
+            TrieNode temp = root;
+            List<TrieNode> visited = new List<TrieNode>();
+
+            foreach (char c in sentence.ToCharArray())
+            {
+                if (temp.children[c] == null)
+                {
+                    temp.children[c] = new TrieNode();
+                }
+                temp = temp.children[c];
+                visited.Add(temp);
+            }
+
+            temp.s = sentence;
+            temp.times += time;
+
+            //we need to update to make sure each TrieNode has max of 3 count
+            //we need to start from first char and assign top 3 suggestions
+            foreach (TrieNode node in visited)
+            {
+                node.Update(temp);
+            }
+        }
+
+        public IList<string> Input(char c)
+        {
+
+            List<string> result = new List<string>();
+
+            if (c == '#')
+            {
+                Add(sb.ToString(), 1);
+                sb = new StringBuilder();
+                curr = root;
+                return result;
+            }
+
+            sb.Append(c);
+            
+            if (curr != null)
+            {
+                curr = curr.children[c];
+            }
+            
+            if (curr == null)
+            {
+                return result;
+            }
+
+
+            foreach (TrieNode node in curr.hot)
+            {
+                result.Add(node.s);
+            }
+
+            return result;
+        }
+    }

@@ -1,0 +1,34 @@
+public class Solution {
+    public bool IsPalindrome(string s) {
+     
+        int start=0;
+     int end= s.Length-1;
+        
+        while (start < end)
+        {
+            char c1= Char.ToLower(s[start]);
+            char c2= Char.ToLower(s[end]);
+            
+            if(!Char.IsLetterOrDigit(c1))
+            {
+                start ++;
+            }
+            if(!Char.IsLetterOrDigit(c2))
+            {
+                 end --;
+            }
+            
+            if(Char.IsLetterOrDigit(c1) && Char.IsLetterOrDigit(c2))
+            {
+                if(c1!=c2)
+                {
+                    return false;
+                }
+                start++;
+                end--;
+            }
+        }
+        
+        return true;
+    }
+}

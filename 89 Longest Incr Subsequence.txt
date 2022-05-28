@@ -1,0 +1,29 @@
+public class Solution {
+    public int LengthOfLIS(int[] nums) {
+        
+        int [] table = new int [nums.Length];
+        for(int i=0; i< nums.Length ;i++)
+        {
+            table[i]=1;
+        }
+        for(int i=0; i< nums.Length; i++)
+        {
+            for(int j=0; j<i ;j++)
+            {
+                if(nums[j]< nums[i])
+                {
+                    table [i]= Math.Max( table [i],table[j] +1) ;
+                }
+            }
+        }
+        
+        int result=0;
+        
+        foreach (int num in table)
+        {
+            result= Math.Max (result, num);
+        }
+        
+        return result;
+    }
+}

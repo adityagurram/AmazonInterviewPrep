@@ -1,0 +1,58 @@
+int[] nums = new int[] { 3, 1 };
+			int target = 1;
+
+			//First Let us find the index position where smallest number starts
+
+			int low = 0;
+			int high = nums.Length;
+
+			while (low<= high)
+			{
+				int mid = low + (high - low) / 2;
+
+				if( high >0 && nums [mid] > nums [high -1])
+				{
+					low = mid + 1;
+				}
+				else
+				{
+					high = mid -1;
+				}
+			}
+
+			int start = low;// this is our smallest number index
+
+			low = 0;
+			high = nums.Length;
+
+			if(target >= nums [start] && target <= nums [high-1])
+			{
+				low = start;// perfect case like sorted
+			}
+			else
+			{
+				high = start;
+			}
+
+			while (low<= high)
+			{
+				int mid = low + (high - low) / 2;
+
+				if(target > nums[mid])
+				{
+					low = mid + 1;
+				}
+				else if(target < nums [mid])
+				{
+					high = mid - 1;
+				}
+				else
+				{
+					Console.WriteLine(mid);
+					return mid;
+				}
+			}
+			Console.WriteLine(low);
+			Console.WriteLine(high);
+			return -1;
+		}

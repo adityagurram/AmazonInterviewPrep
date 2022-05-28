@@ -1,0 +1,149 @@
+
+
+public class Solution {
+    
+
+
+public class Solution {
+    
+    
+    public int[] TopKFrequent(int[] nums, int k) {
+       
+        //The second approach is to find the every kth largest element using Quick Select Algo
+        Dictionary<int, int> dict= new Dictionary<int, int> ();
+        for(int i=0; i< nums.Length ; i++)
+        {
+            if(!dict.ContainsKey(nums[i]))
+            {
+                dict. Add (  nums[i], 1);
+            }
+            else
+            {
+                dict[nums[i]]++;
+            }
+        }
+        
+        int [] nums1= new int [dict.Count ()];
+        int counter=0;
+        foreach(int key in dict.Keys)
+        {
+         nums1 [counter++]= dict[key];   
+        }
+        
+        List<int> result= new List<int> ();
+        
+        for(int i=1; i<=k; i++)
+        {
+            helper (ref nums1, nums1.Length -i,0, nums1.Length -1);
+            int tempRes=nums1 [nums1.Length -i];
+            int answer=dict.FirstOrDefault (x=> x.Value== tempRes).Key;
+            result. Add (answer);
+            dict.Remove(answer);
+        }
+        return result.ToArray();
+    }
+    
+    private void helper (ref int [] nums1, int k, int start, int end)
+    {
+        if (start >= end )
+        {
+            return;
+        }
+        
+        Random rand= new Random ();
+        int randomIndex= rand.Next(start, end);
+        
+        int pivot= nums1 [randomIndex];
+        
+        int smaller=start;
+        int bigger=start;
+        
+        swap(ref nums1, smaller, randomIndex);
+        
+        for(int k1= bigger +1 ; k1<=end; k1++)
+        {
+            if(nums1 [k1] < pivot)
+            {
+                smaller++;
+                swap(ref nums1, k1, smaller);
+            }
+        }
+        
+        swap (ref nums1, smaller, start);
+        
+        if(k==smaller)
+        {
+             return;
+        }
+        else if (k< smaller)
+        {
+            helper (ref nums1, k, start, smaller -1);
+        }
+        else
+        {
+             helper (ref nums1, k, smaller + 1, end);
+        }
+        
+    }
+    
+    private void swap(ref int [] nums1, int i, int j)
+    {
+        int temp= nums1[i];
+        nums1[i]= nums1[j];
+        nums1[j]= temp;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+public class Solution {
+    
+    
+    public int[] TopKFrequent(int[] nums, int k) {
+       // ALgo is simple
+        //Push all the elements in the heap and extrack k times to get the indexes. That's why for sorting, we need fre and for results we need indexes. That's why need an object to store both index and freq
+        //Dict for storing frequencies
+        
+        Dictionary<int, int> dict= new Dictionary<int, int> ();
+        for(int i=0; i< nums.Length ; i++)
+        {
+            if(!dict.ContainsKey(nums[i]))
+            {
+                dict. Add (  nums[i], 1);
+            }
+            else
+            {
+                dict[nums[i]]++;
+            }
+        }
+        
+       var ordered = dict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+      
+        
+        List<int> result= new List<int> ();
+        //sDict.Reverse();
+        foreach (var key in ordered.Keys )
+        {
+            if(k==0)
+            {
+                return result.ToArray(); 
+            }
+            
+            result. Add (key);
+            k--;
+        }
+        
+        return result.ToArray();
+        
+    }
+}

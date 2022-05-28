@@ -1,0 +1,133 @@
+//tricky problem
+//we are using first row and first col aprt from 0,0 as inbuilt space to identify which ones are to be zeroed.
+// since 0,0 is used in the row identifier, we need bool variable to hold first col checks
+//once we store them, we need to update all the entries based on the identifiers
+//if 0,0 is identified as 0 then we need to update first row full 0s later on
+//is bool flag is True then we need to dump all first col to 0s
+
+public class Solution {
+    public void SetZeroes(int[][] matrix) {
+        
+        if(matrix==null || matrix.Length==0)
+        {
+             return;
+        }
+       
+        bool firstColFlag= false;
+        
+        int row= matrix.Length;
+        int col= matrix[0].Length;
+        
+        for(int i=0; i< row; i++)
+        {
+            if(matrix[i][0]==0)
+            {
+              firstColFlag=true;  
+            }
+            for(int j=1; j< col; j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    matrix[0][j]=0;
+                    matrix[i][0]=0;
+                }
+            }
+        }
+        
+        for(int i=1; i< row; i++)
+        {
+            for( int j=1; j< col; j++)
+            {
+                if(matrix[0][j]==0 || matrix [i][0]==0)
+                {
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        
+        
+        if(matrix[0][0]==0)
+        {
+            for(int j=1; j< col; j++)
+            {
+                matrix[0][j]=0;
+            }
+        }
+        
+        
+        if(firstColFlag)
+        {
+            for(int i=0; i < row; i++)
+            {
+                matrix[i][0]=0;
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public class Solution {
+    public void SetZeroes(int[][] matrix) {
+        
+        if(matrix==null || matrix.Length==0)
+        {
+             return;
+        }
+        
+       int [] rows= new int [matrix.Length];
+       int [] cols= new int [matrix[0].Length];
+        
+        for(int i=0; i< matrix.Length ; i++)
+        {
+            for(int j=0; j< matrix[i].Length ; j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    //call helper method by passing row, col
+                    rows[i]=1;
+                    cols[j]=1;
+                }
+            }
+        }
+        
+        for(int i=0; i< rows.Length ; i++)
+        {
+             if(rows[i]==1)
+             {
+                     for (int j=0; j< matrix[i].Length ; j++)
+                     {
+                            matrix[i][j]=0;
+                     }
+             }
+             
+        }
+        
+        for(int j=0; j< cols.Length ; j++)
+        {
+             if(cols[j]==1)
+             {
+                     for (int i=0; i< matrix.Length ; i++)
+                     {
+                            matrix[i][j]=0;
+                     }
+             }
+             
+        }
+        
+       
+    }
+    
+}

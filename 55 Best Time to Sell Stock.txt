@@ -1,0 +1,30 @@
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        
+       int maxProfit=0;
+        
+        if(prices==null || prices.Length ==0)
+        {
+            return 0;
+        }
+        
+        int minIndex=prices.Length;
+        int minPrice=Int32.MaxValue;
+        for(int i=0; i< prices.Length ; i++)
+        {         
+            if(prices [i]<minPrice )
+            {
+                  minPrice= Math.Min (minPrice, prices[i]);
+                  minIndex= i;
+            }
+            else
+            {
+                maxProfit= Math.Max (maxProfit, prices[i]- minPrice);
+            }
+              
+        }
+        
+        
+       return maxProfit;
+    }
+}

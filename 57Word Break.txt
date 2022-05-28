@@ -1,0 +1,25 @@
+public class Solution {
+    public bool WordBreak(string s, IList<string> wordDict) {
+        
+        int len= s.Length;        
+        bool [] table = new bool[len +1];
+        
+        
+        table [0]= true;
+        HashSet<string> dict= new HashSet<string> (wordDict);
+        
+        for(int i=1; i<=len ; i++)
+        {
+            for (int lastwordlen =1; lastwordlen<=i; lastwordlen++)
+            {
+                if(dict.Contains (s.Substring (i-lastwordlen, lastwordlen)) &&  table [i-lastwordlen]==true) //that split word is in dict and rest other half is also in dict and we can know that using table 
+                {
+                    table [i]= true;
+                }
+            }
+        }
+        
+        return table [len];
+        
+    }
+}

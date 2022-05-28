@@ -1,0 +1,67 @@
+public class FreqStack {
+
+    //Basically we need 3 main things here
+    //1. Keys and their counts
+    //what is the max frequency out of those keys and counts
+    //storing those keys wrt to counts in a stack so that we will know for which max freq, we have the top element and tie scenario can be implicitly covered
+  private   Dictionary<int, int> keyCounts;
+    private int maxFreq=0;
+   private Dictionary<int, Stack<int>> maxFreqStack;
+    
+    public FreqStack() {
+        keyCounts= new Dictionary<int, int> ();
+        maxFreqStack= new Dictionary<int, Stack<int>> ();
+    }
+    
+    public void Push(int val) {
+        
+        //a new value comes 
+        
+        if(!keyCounts.ContainsKey(val))
+        {
+            keyCounts.Add (val, 1);
+        }
+        else
+        {
+            keyCounts[val]++;
+        }
+        
+        //now will this be maxfreq one?
+        
+       maxFreq= Math.Max (maxFreq, keyCounts [val]);
+        
+        if(!maxFreqStack.ContainsKey(keyCounts[val]))
+        {
+            maxFreqStack.Add (keyCounts[val], new Stack<int>());
+            maxFreqStack[keyCounts[val]].Push (val);
+        }
+        else
+        {
+            Stack<int> s= maxFreqStack[keyCounts[val]];
+            s.Push (val);
+        }
+    }
+    
+    public int Pop() {
+        
+        int removedVal= maxFreqStack[maxFreq].Peek();
+        Stack<int> temp= maxFreqStack[maxFreq];        
+        temp.Pop();
+        if(temp.Count () ==0)
+        {
+            maxFreq--;
+        }
+        
+    keyCounts[removedVal]--;
+        
+            return removedVal;
+        
+    }
+}
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack obj = new FreqStack();
+ * obj.Push(val);
+ * int param_2 = obj.Pop();
+ */

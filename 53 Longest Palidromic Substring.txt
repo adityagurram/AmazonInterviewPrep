@@ -1,0 +1,62 @@
+public class Solution {
+    public string LongestPalindrome(string s) {
+        
+        string strResult= string.Empty;
+        int maxLen= 0;
+        
+        //here we check at each index and find palidromic string and then calculate its len
+        //Every time we find the substring, we need to update the results
+        
+        
+        for(int i=0; i< s.Length ; i++)
+        {
+            //this is the case where I check for odd length 
+            
+            int left=i;
+            int right=i;
+            
+            while(left >=0 &&  right < s.Length  && s[left]==s[right])
+            {
+                //once we found the palidoromic string then we update the res
+            if(right - left + 1 > maxLen)
+            {
+                maxLen= right - left +1;
+                strResult= s.Substring (left, maxLen);
+            }
+                
+                left--; //since we are starting at mid pos we to traverse left by - with 1
+                right ++;
+                
+            }
+            
+            
+            
+            
+            //this is for even length
+            
+            left=i;
+            right= i+1;
+             while(left >=0 &&  right < s.Length  && s[left]==s[right])
+            {
+                  //once we found the palidoromic string then we update the res each time, we found one. This is continous process
+            if(right - left + 1 > maxLen)
+            {
+                maxLen= right - left +1;
+                strResult= s.Substring (left, maxLen);
+            }
+                 
+                left--;
+                right ++;
+                
+            }
+            
+           
+            
+            
+        }
+        
+        return strResult;
+        
+        
+    }
+}

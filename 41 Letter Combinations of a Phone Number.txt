@@ -1,0 +1,49 @@
+public class Solution {
+    public List<string> result= new List<string> ();
+    public IList<string> LetterCombinations(string digits) {
+        
+        
+        
+        if(digits.Length==0)
+        {
+            return result;
+        }
+        
+        Dictionary<int, string> dict= new Dictionary<int, string> ();
+        
+        dict. Add (2, "abc");
+        dict. Add (3, "def");
+        dict. Add (4, "ghi");
+        dict. Add (5, "jkl");
+        dict. Add (6, "mno");
+        dict. Add (7, "pqrs");
+        dict. Add (8, "tuv");
+        dict. Add (9, "wxyz");
+        
+      List<char> slate= new List<char> ();
+        helper (0, dict, digits, slate );
+        return result;
+        
+    }
+    
+    private void helper (int index , Dictionary<int, string> dict, string digits, List<char> slate)
+    {
+        if(index == digits.Length )
+        {
+            string temp= new string (slate.ToArray());
+            result. Add (temp);
+            return;
+        }
+        int num=Convert.ToInt32( digits[index] - '0');
+        String cStr= dict[num];
+        
+        for(int j=0; j< cStr.Length ; j++)
+        {
+            slate. Add (cStr[j]);
+            
+            helper (index +1, dict, digits, slate);
+            slate.RemoveAt(slate.Count () -1);
+        }
+        
+    }
+}
