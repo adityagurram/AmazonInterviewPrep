@@ -1,0 +1,40 @@
+public class Solution {
+    public int CanCompleteCircuit(int[] gas, int[] cost) {
+        
+        //THe algo here is greedy approach
+        //but whenever the running cost is greater than gas , means u dont have funds to purchase gas as the cost is higher so u cant drive
+        //so lets check if running cost is > gas price then return -1
+        
+        int gasPrice=0;
+        int costPrice=0;
+        for(int i=0; i<gas.Length ; i++)
+        {
+            gasPrice += gas[i];
+            costPrice+= cost[i];
+            
+           
+        }
+            if(costPrice > gasPrice)
+            {
+                 return -1;
+            }
+        
+        int runningTotal=0;
+        //now we need to check where can we start so that we have funds to purchase gas and move to next gas station
+        //if we dont have funds then we cant start at that gas station and move to next stattion to start fresh again
+        int start=0;
+        for(int i=0; i< gas.Length; i++)
+        {
+            runningTotal+= gas[i]- cost[i];
+            
+            if(runningTotal<0)
+            {
+                //u need to start fresh
+                runningTotal=0;
+                start= i+1;
+            }
+        }
+        
+        return start;
+    }
+}

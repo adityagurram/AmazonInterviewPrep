@@ -1,0 +1,42 @@
+public class Solution {
+    public int GetMaxLen(int[] nums) {
+        
+        //we need to keep track of counts after seeing 1st negative
+        //if we dont see a negative, consider from the beginning
+        //if we see 0, then reset all
+        //we need a boolean var for identifying even/odd negatives
+        
+        int counts_after_1st_negativeInclusive=0;
+        bool is_even_negatives= true;
+        int counts_from_beginning=0;
+        
+        int max=0;
+        foreach (int num in nums)
+        {
+            counts_from_beginning++;
+            if(num >0)
+            {
+                if(counts_after_1st_negativeInclusive >0)
+                {
+                    counts_after_1st_negativeInclusive++;
+                }
+            }
+            else if(num <0)
+            {
+                is_even_negatives= !is_even_negatives;
+                counts_after_1st_negativeInclusive++;
+            }
+            else
+            {
+                //num==0                
+                counts_after_1st_negativeInclusive=0;
+                is_even_negatives= true;
+                counts_from_beginning=0;
+            }
+            
+            max= Math.Max (max, is_even_negatives?  counts_from_beginning : counts_after_1st_negativeInclusive -1);
+        }
+        
+        return max;
+    }
+}

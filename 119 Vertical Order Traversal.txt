@@ -1,0 +1,124 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public IList<IList<int>> VerticalOrder(TreeNode root) {
+         //Here the algo is 
+            //1. We need to find the horizontal distance from root to all other nodes
+            // for left child it will be hd of parent -1, for the right child it will be hd parent +1
+            //Save the hd and nodes in a hashtable by doing level order traversal
+
+
+            Dictionary<int, List<int>>dict = new Dictionary<int, List<int>>();
+
+            IList<IList<int>> result = new List<IList<int>>();
+
+            if (root == null)
+            {
+                return  result;
+            }
+            //the below two stmts helps in updating hd values
+            Dictionary<TreeNode, int> hdValues = new Dictionary<TreeNode, int>();
+            hdValues.Add(root, 0);
+            helper(root, hdValues);
+
+
+            dict.Add(0, new List<int>());
+            dict[0].Add(root.val);
+
+            //Now lets do level order traversal
+           
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+
+          int hd=0;
+            while (queue.Count() > 0)
+            {
+                int queueCount = queue.Count();
+
+                for (int i = 0; i < queueCount; i++)
+                {
+                    TreeNode temp = queue.Dequeue();
+                    hd=hdValues[temp];
+                    if (temp.left != null)
+                    {
+                        queue.Enqueue(temp.left);
+                        if (!dict.ContainsKey(hd - 1))
+                        {
+                            dict.Add(hd - 1, new List<int>());
+                            dict[hd - 1].Add(temp.left.val);
+                        }
+                        else
+                        {
+                            dict[hd - 1].Add(temp.left.val);
+                        }
+                    }
+
+                    if (temp.right != null)
+                    {
+                        queue.Enqueue(temp.right);
+                        if (!dict.ContainsKey(hd + 1))
+                        {
+                            dict.Add(hd + 1, new List<int>());
+                            dict[hd + 1].Add(temp.right.val);
+                        }
+                        else
+                        {
+                            dict[hd + 1].Add(temp.right.val);
+                        }
+                    }
+                    
+                }
+            }
+        
+        
+        //Now find the min value out of the dict
+         int min = Int32.MaxValue;
+         int max= Int32.MinValue;
+        foreach (int key in dict.Keys)
+        {
+            min= Math.Min (min, key);
+            max= Math.Max(max, key);
+        }
+        
+        
+        for(int i=min; i<= max; i++)
+        {
+            result. Add (dict[i]);
+        }
+        return result;
+
+    }
+    
+    
+  private void helper(TreeNode root, Dictionary<TreeNode, int> hdValues)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            if (root.left != null)
+            {
+                hdValues.Add(root.left, hdValues[root] - 1);
+                helper(root.left, hdValues);
+            }
+
+
+            if (root.right != null)
+            {
+                hdValues.Add(root.right, hdValues[root] + 1);
+                helper(root.right, hdValues);
+            }
+
+        }
+}

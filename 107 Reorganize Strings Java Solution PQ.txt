@@ -1,0 +1,148 @@
+class Solution {
+    public String reorganizeString(String s) {
+        
+        //Here is the algo
+        //we maintain the counts of each character and greedily picks the chars that has the highest and second highest counts and build the string one by one using maxheap
+        //Reduce the counts by -1 to highest and second highest and put them back in the max heap
+        
+        //finally at the end check if the heap is not empty and check the char count. if it is =1 we can add to result othwerise return empty as we cannt fulfil the condition[two adjacent characters are not the same].
+        
+        Map<Character, Integer> hashMap= new HashMap<>();
+        for(Character c : s.toCharArray())
+        {
+            hashMap.put(c, hashMap.getOrDefault(c, 0)+1);
+        }
+        
+        StringBuilder result= new StringBuilder();
+        PriorityQueue<Character> maxHeap= new PriorityQueue<>((a, b)-> hashMap.get(b)- hashMap.get(a));
+        maxHeap.addAll(hashMap.keySet());
+        
+        while (maxHeap.size()>1)
+        {
+            char current= maxHeap.remove();
+            char next= maxHeap.remove ();
+            
+            result.append (current);
+            result.append (next);
+            
+            hashMap.put(current, hashMap.get(current)-1);
+            hashMap.put(next, hashMap.get(next)-1);
+            
+            if(hashMap.get(current) >0)
+            {
+                maxHeap.add (current);
+            }
+            
+            if(hashMap.get(next) >0)
+            {
+                 maxHeap.add (next);
+            }
+        }
+        
+        if(!maxHeap.isEmpty())
+        {
+            char c = maxHeap.remove ();
+            if(hashMap.get(c)==1)
+            {
+                result.append (c);
+            }
+            else if (hashMap.get(c)>1)
+            {
+                return "";
+            }
+        }
+        
+        return result.toString();
+    }
+    
+}
+
+
+
+
+//C# sol
+ public class PQ
+    {
+        public char c;
+        public int p;
+
+        public PQ(char c, int p)
+        {
+            this.c = c;
+            this.p = p;
+        }
+    }
+
+public class Solution {
+    public string ReorganizeString(string s) {
+        
+        
+        SortedDictionary<PQ, int> sd= new SortedDictionary<PQ, int> (Comparer<PQ>.Create((a, b)=>
+                                                           {
+                                                               if(a==b) return 0;
+                                                               int result= b.p.CompareTo(a.p);
+                                                               return result==0? 1: result;
+                                                           }));
+        Dictionary<char , int> dict= new Dictionary<char, int> ();
+        
+        foreach (char c in s)
+        {
+            if(!dict.ContainsKey(c))
+            {
+                 dict.Add (c, 1);
+            }
+            else
+            {
+                 dict[c]++;
+            }
+        }
+        
+        //now we need to add everyting to sd
+        
+        foreach (char key in dict.Keys)
+        {
+            sd.Add (new PQ(key, dict[key]), dict[key]);
+        }
+        StringBuilder result= new StringBuilder ();
+        while (sd.Count () > 1)
+        {
+            
+            PQ current= sd.First ().Key;
+            sd.Remove (current);
+            
+             PQ next= sd.First ().Key;
+            sd.Remove (next);
+            
+            result.Append (current.c);
+            result.Append (next.c);
+            
+            dict[current.c]--;
+            dict[next.c]--;
+            
+            if(dict[current.c] >0)
+            {
+                sd.Add(current,  dict[current.c] );
+            }
+            
+              if(dict[next.c] >0)
+            {
+                sd.Add(next,dict[next.c]);
+            }
+            
+        }
+        
+        if(sd.Count () >0)
+        {
+            PQ last= sd.First().Key;
+            if(dict[last.c]>1)
+                
+            {
+                 return "";
+            }
+            
+            result.Append (last.c);
+        }
+        
+        return result.ToString();
+    }
+}

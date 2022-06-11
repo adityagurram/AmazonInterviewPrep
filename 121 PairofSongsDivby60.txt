@@ -1,0 +1,38 @@
+public class Solution {
+    public int NumPairsDivisibleBy60(int[] time) {
+        
+        //The algo here is to find  the reminder after divisible by 60 and identify if there is any entry in hashmap that supports the reminder so that both will together divide by 60
+        
+        int count=0;
+        
+        Dictionary<int, int> dict= new Dictionary<int, int> ();
+       
+        foreach (int t in time)
+        {
+            if(t %60==0)
+            {
+                if(dict.ContainsKey(t %60))
+                {
+                     count = count + dict[t%60];
+                }             
+            }            
+            else
+            {
+                 if(dict.ContainsKey(60 - t %60))
+                 {
+                     count +=dict[60 -  t%60];                     
+                 }
+            }
+            
+             if(!dict.ContainsKey(t%60))
+             {
+                  dict. Add (t%60,1);
+             }
+            else
+            {
+                 dict[t%60]++;
+            }          
+        }        
+        return count;
+    }
+}

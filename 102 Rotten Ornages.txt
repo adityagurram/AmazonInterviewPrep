@@ -1,0 +1,77 @@
+public class Solution {
+    public int OrangesRotting(int[][] grid) {
+        
+        HashSet<string> fresh= new HashSet<string>();
+        HashSet<string> rotten= new HashSet<string>();
+        
+        for(int i=0; i< grid.Length ; i++)
+        {
+            for(int j=0; j< grid[i].Length; j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    fresh.Add (""+ i+ j);
+                }
+                
+               else if(grid[i][j]==2)
+                {
+                    rotten.Add (""+ i + j);
+                }
+            }
+        }
+        
+        int [][] directions= new int [4][];
+        
+        directions[0]= new int[2];
+         directions[1]= new int[2];
+         directions[2]= new int[2];
+         directions[3]= new int[2];
+        
+        directions[0][0]= 0;
+         directions[0][1]= 1;
+        
+        
+        directions[1][0]= 0;
+         directions[1][1]= -1;
+        
+         directions[2][0]= 1;
+         directions[2][1]= 0;
+        
+          directions[3][0]= -1;
+         directions[3][1]= 0;
+        
+        int minutes=0;
+        while (fresh.Count () >0)
+        {
+            HashSet<string> infected= new HashSet<string> ();           
+            
+            foreach (string s in rotten)
+            {
+                 int i= s[0]-'0';
+                 int j= s[1]-'0';
+                 foreach (int[] direction in directions)
+                 {
+                     int nextI= i + direction[0];
+                     int nextJ= j+ direction[1];
+                     if(fresh.Contains (""+ nextI+ nextJ))
+                     {
+                         infected.Add (""+ nextI+ nextJ);
+                         fresh.Remove (""+ nextI+ nextJ);
+                     }
+                 }
+            }
+            
+            if(infected.Count ()==0)
+            {
+                 return -1;
+            }
+            
+            minutes++;
+            rotten= infected;
+        }
+     return minutes;   
+    }
+    
+   
+    
+}

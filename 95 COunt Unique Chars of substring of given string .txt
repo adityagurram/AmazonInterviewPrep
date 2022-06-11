@@ -1,0 +1,36 @@
+public class Solution {
+    public int UniqueLetterString(string s) {
+     
+        //Here first we need to add the indexes to the hashmap to iterate it again and find how many left and how many right substrings that are unique and add the product to the sum
+        
+        Dictionary<char, List<int> > dict= new Dictionary<char, List<int>> ();        
+        for (int i=0; i< s.Length ; i++)
+        {
+            if(!dict.ContainsKey(s[i]))
+            {
+                dict. Add (s[i], new List<int> ());
+                dict[s[i]].Add (i);
+            }
+            else
+            {
+              dict[s[i]].Add (i);   
+            }
+        }
+        
+        int sum=0;
+        
+        foreach (List<int> arr in dict.Values)
+        {
+            for(int i=0; i< arr.Count (); i++)
+            {
+                int left= i==0? arr[i]+1 : arr[i]- arr[i-1];// watch the video u will understand this. kind of similar to monotonic stack approach
+                int right= i== arr.Count() -1 ? s.Length - arr[i] : arr[i+1]- arr[i];
+                
+                sum+= left*right ;
+            }
+        }
+        
+        return sum;
+        
+    }
+}

@@ -1,0 +1,28 @@
+public class Solution {
+    public int MinFlipsMonoIncr(string s) {
+        
+        int num_flips=0;
+        
+        int onesCount=0;
+        foreach (char c in s)
+        {
+            if(c=='1')
+            {
+                onesCount++;
+            }
+            
+            else
+            {
+                if(onesCount >0)
+                {
+                    //we need to flip
+                    
+                    num_flips++;
+                    onesCount--;//since we made one 1 to 0 then we have to reduce ones count;
+                }
+            }
+        }
+        
+        return num_flips;
+    }
+}

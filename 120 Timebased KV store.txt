@@ -1,0 +1,62 @@
+public class TimeMap {
+
+    public Dictionary<string, List<KeyValuePair<string, int>>> dict;
+    
+    public TimeMap() {
+        
+        dict= new Dictionary<string, List<KeyValuePair<string, int>>> ();
+    }
+    
+    public void Set(string key, string value, int timestamp) {
+        
+        if(!dict.ContainsKey(key))
+        {
+             dict. Add (key, new List<KeyValuePair<string, int>> ());
+            dict[key].Add (new KeyValuePair<string, int>(value,timestamp));
+        }
+        else
+        {
+            dict[key].Add (new KeyValuePair<string, int>(value,timestamp));
+        }
+    }
+    
+    public string Get(string key, int timestamp) {
+        
+        List<KeyValuePair<string, int>>lstPairs= new  List<KeyValuePair<string, int>>();
+        if(dict.ContainsKey(key))
+        {
+          lstPairs= dict[key]; 
+        }
+         
+        string result="";
+        //Binary Search
+        int left= 0;
+        int right= lstPairs.Count () -1;
+        
+        while (left <= right)
+        {
+            int mid= (left + right) /2;
+            
+            //Here is the trickey part
+            if(lstPairs[mid].Value <= timestamp)
+            {
+                result= lstPairs[mid].Key;
+                left= mid +1;
+            }
+            else
+            {
+                right = mid -1;
+            }
+                
+        }
+        
+        return result;
+    }
+} 
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.Set(key,value,timestamp);
+ * string param_2 = obj.Get(key,timestamp);
+ */

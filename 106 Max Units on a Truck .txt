@@ -1,0 +1,55 @@
+public class Solution {
+    public int MaximumUnits(int[][] boxTypes, int truckSize) {
+        
+        //Logic is we are following greedy approach where we pick the max value one and reduce our trucksize till we fill it all
+        
+        //for this we need to sort the boxTypes with numberofUnits(consider this as value)
+        
+        var SortedboxTypes= boxTypes.OrderByDescending(x=> x[1]);
+       
+        
+        int result=0;
+        foreach (int [] boxType in SortedboxTypes)
+        {
+            if(boxType[0] <truckSize)
+            {
+                truckSize= truckSize- boxType[0];
+                result= result + boxType[0] * boxType[1];
+            }
+            else
+            {
+                return  result +truckSize * boxType[1];
+            }
+        }
+        
+        return result;
+        
+    }
+}spublic class Solution {
+    public int MaximumUnits(int[][] boxTypes, int truckSize) {
+        
+        //Logic is we are following greedy approach where we pick the max value one and reduce our trucksize till we fill it all
+        
+        //for this we need to sort the boxTypes with numberofUnits(consider this as value)
+        
+        var SortedboxTypes= boxTypes.OrderByDescending(x=> x[1]);
+       
+        
+        int result=0;
+        foreach (int [] boxType in SortedboxTypes)
+        {
+            if(boxType[0] <truckSize)
+            {
+                truckSize= truckSize- boxType[0];
+                result= result + boxType[0] * boxType[1];
+            }
+            else
+            {
+                return  result +truckSize * boxType[1];
+            }
+        }
+        
+        return result;
+        
+    }
+}

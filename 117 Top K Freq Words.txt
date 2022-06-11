@@ -1,0 +1,48 @@
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        
+        //The idea is to use a hashmap to get the frequencies of words
+        //Use PQ min heap to store the top K words with higest freq. If the freq is same then use the lex order for storing on heap
+        //finally pop all the K words on heap and make sure it is reversed as we are storing words on heap in rev lex order just to have a flexibility to remove them if they doesnt fall in our range.
+        // Like [leetcode, love,i]
+        //we will remove leetcode as count is 1 and then print all elements on minHeap in rev order 
+        
+        Map<String, Integer> map= new HashMap<>();
+        for(String word : words)
+        {
+            map.put(word, map.getOrDefault(word, 0)+1);
+        }
+        
+        PriorityQueue<String> minHeap= new PriorityQueue<>( (a, b) -> {
+            int f1= map.get(a);
+            int f2= map.get(b);
+            
+            if(f1==f2)
+            {
+             return   b.compareTo(a);
+            }
+            
+            return f1-f2;
+        }
+        );
+        
+        for(Map.Entry<String, Integer> entry: map.entrySet())
+        {
+            String key= entry.getKey();
+            minHeap.add(key);
+            if(minHeap.size() >k)
+            {
+                minHeap.poll();
+            }
+        }
+        
+        List<String> result= new ArrayList();
+       while (!minHeap.isEmpty())
+       {
+           result.add (minHeap.poll());
+       }
+        
+       Collections.reverse(result);
+        return result;
+    }
+}

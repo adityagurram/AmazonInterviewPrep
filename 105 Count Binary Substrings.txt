@@ -1,0 +1,32 @@
+public class Solution {
+    public int CountBinarySubstrings(string s) {
+        
+        int currentCount=1;//since we are starting at 1st index
+        int prevCount=0;
+        int result=0;
+        
+        for(int i=1; i<s.Length; i++)
+        {
+            if(s[i]!=s[i-1])
+            {
+                result = result + Math.Min (currentCount, prevCount);
+                //we will use our current count in the next iteration as prevCount
+                //0 0 1
+                prevCount=currentCount;
+                currentCount=1;//restart again
+            }
+            else
+            {
+                //bcz we need to know the number of either 0s or 1s that are grouped together
+                
+                currentCount ++;
+            }
+        }
+        
+        //for the last block  0011 at the end
+        result += Math.Min (currentCount, prevCount);
+ 
+        return result;
+        
+    }
+}

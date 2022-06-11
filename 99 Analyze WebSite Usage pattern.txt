@@ -1,0 +1,100 @@
+public class timeweb
+{
+    public int time;
+    public string web;
+    
+    public timeweb(int time, string web)
+    {
+        this.time= time;
+        this.web= web;
+            
+    }
+}
+
+public class Solution {
+    
+    public IList<string> MostVisitedPattern(string[] username, int[] timestamp, string[] website) {
+        
+       string result=string.Empty;
+        //basic idea is to iterate thru all the patterns and idenfity their score
+        //if u get the max score then return the result othwerise which ever score is lex small then return that pattern
+        
+        //as a first step, lets map users to website & timestamp for iteration
+        
+        Dictionary<string, List<timeweb>> user_timeweb_map= new Dictionary<string, List<timeweb>>();
+        
+        for(int i=0; i< username.Length ; i++)
+        {
+            string user= username[i];
+            int time= timestamp[i];
+            string web= website[i];
+            
+           timeweb tw= new timeweb(time, web);
+            
+            if(!user_timeweb_map.ContainsKey(user))
+            {
+               user_timeweb_map.Add (user, new List<timeweb> ());
+                
+                 user_timeweb_map[user].Add (tw);
+            }
+            else
+            {
+                user_timeweb_map[user].Add (tw);
+            }
+        }
+        
+        Dictionary<string, HashSet<string> > dict_pattern_user= new Dictionary<string, HashSet<string>>();
+        int maxScore=0;
+        
+        //now we need to iterate thru all the users and identify patterns and score them
+        
+        
+        foreach(string user in user_timeweb_map.Keys)
+        {
+            //what if the given input time is not sorted
+            List<timeweb> timewebobjs= user_timeweb_map[user];
+            List<timeweb> sortedtimewebobjs= timewebobjs.OrderBy(o=>o.time).ToList();
+            
+            
+            //now identify the pattern
+            for(int i=0; i< sortedtimewebobjs.Count () -2; i++)
+            {
+                for (int j=i+1; j<sortedtimewebobjs.Count ()-1; j++)
+                {
+                    for(int k= j+1; k< sortedtimewebobjs.Count () ; k++)
+                    {
+                        //we are printing the pattern here. We need to save it somewhere to identify the scores of that pattern and adding it to our dict to identify our score
+                        string pattern= sortedtimewebobjs[i].web + ":" + sortedtimewebobjs[j].web + ":" +
+                            sortedtimewebobjs[k].web ;
+                        
+                        if(!dict_pattern_user.ContainsKey(pattern))
+                        {
+                            dict_pattern_user.Add (pattern, new HashSet<string> ());
+                            dict_pattern_user[pattern].Add (user);
+                        }
+                        else
+                        {
+                             dict_pattern_user[pattern].Add (user);
+                        }
+                        
+                        if( dict_pattern_user[pattern].Count () > maxScore)
+                        {
+                            //new result found
+                            maxScore=dict_pattern_user[pattern].Count ();
+                            result=pattern;
+                        }
+                        else  if (dict_pattern_user[pattern].Count () == maxScore)
+                        {
+                            //same result for two diff patterns. identify the lex one
+                            result= result.CompareTo(pattern) <=0 ? result: pattern;
+                        }
+                    }
+                }
+            }
+            
+            
+        }
+        
+        return result.Split(':').ToList();
+    }
+}

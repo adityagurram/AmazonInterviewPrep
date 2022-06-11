@@ -1,0 +1,99 @@
+public class Solution {
+    public int GetFood(char[][] grid) {
+        
+        
+        if(grid==null || grid.Length ==0)
+        {
+            return 0;
+        }
+        int myposx=0;
+        int myposy=0;
+        
+        bool myposFound=false;
+        
+        for(int i=0; i< grid.Length; i++)
+        {
+             for(int j=0; j< grid[i].Length; j++)
+             {
+                 if(grid[i][j]=='*')
+                 {
+                     myposx= i;
+                     myposy=j;
+                     myposFound= true;
+                 }
+             }
+        }
+        
+        if(myposFound== false)
+        {
+             return 0;
+        }
+        
+        HashSet<KeyValuePair<int, int>> visited= new HashSet<KeyValuePair<int, int>>();
+        
+        visited.Add (new KeyValuePair<int, int> (myposx, myposy));
+        
+        Queue<KeyValuePair<int, int>> q= new Queue<KeyValuePair<int, int>> ();
+        
+        q.Enqueue(new KeyValuePair<int, int>(myposx, myposy));
+        
+        int[][] directions = new int[4][];
+
+            directions[0] = new int[2];
+            directions[1] = new int[2];
+            directions[2] = new int[2];
+            directions[3] = new int[2];
+
+            directions[0][0] = 0;
+            directions[0][1] = 1;
+
+
+            directions[1][0] = 0;
+            directions[1][1] = -1;
+
+            directions[2][0] = 1;
+            directions[2][1] = 0;
+
+            directions[3][0] = -1;
+            directions[3][1] = 0;
+        
+        int result=0;
+         KeyValuePair<int, int> cell=new  KeyValuePair<int, int> ();
+        while (q.Count () > 0)
+        {
+            int qCount= q.Count();
+            for(int i=0; i< qCount; i++)
+            {
+           cell= q.Dequeue();
+                
+                foreach (int [] direction in directions)
+                {
+                    int newX= cell.Key + direction [0];
+                    int newY= cell.Value + direction[1];
+                    
+                    KeyValuePair<int, int> newCell= new  KeyValuePair<int, int> (newX, newY);
+                    
+                    if(newX<0 || newY <0 || newX>= grid.Length || newY>= grid[newX].Length || grid[newX][newY]=='X')
+                    {
+                        continue;
+                    }
+                    
+                    if( grid[newX][newY]=='#')
+                    {
+                         return result +1;
+                    }
+                    if(!visited.Contains (newCell))
+                    {
+                        visited.Add (newCell);
+                        q.Enqueue(newCell);
+                    }
+                }               
+                
+            }
+            result++;
+        }
+        
+        
+        return result;
+    }
+}

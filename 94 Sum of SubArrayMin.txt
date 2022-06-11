@@ -1,0 +1,42 @@
+public class Solution {
+    public int SumSubarrayMins(int[] arr) {
+        
+        //Here we need two stacks to store top value and counts that corresponding to subarrays
+        
+        long finalSum=0;
+        
+        
+        long currSum=0;
+        Stack<long> Value= new Stack<long> ();
+        Stack<int> Count= new Stack<int> ();
+        
+          int mod=1000000007;
+        foreach (int num in arr)
+        {
+          int currCount=1;
+            while (Value.Count() > 0)
+            {
+                if (Value.Peek() < num)//min value changes
+                {
+                    break;
+                }
+                
+                long val= Value.Pop();
+                int count= Count.Pop();
+                
+                currCount= currCount + count;
+                currSum= (currSum- (val * count) % mod) ;
+            }
+            
+            Value.Push (num);
+            Count.Push (currCount);
+            currSum= (currSum + (num*currCount) % mod) % mod;
+            
+            
+            finalSum= finalSum+ currSum;
+        }
+        
+        return (int) finalSum ;
+       
+    }
+}

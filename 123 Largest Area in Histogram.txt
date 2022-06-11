@@ -1,0 +1,48 @@
+public class Solution {
+    public int LargestRectangleArea(int[] heights) {
+        
+        //This is an interesting problem. Code looks simple but we need think big for solving this
+        //This requires stack data structure for solving because we need to check the incoming height vs already present height and based on that take respective actions
+        // The algo is to loop thu the heights and check if the incoming height > top of the stack height 
+        //if it is greater then just add it bcz we can extend rectangle for calculating the area. 
+        //If not, then continue popping the element from the stack as it can be extended backwards so mark the starting index for that incoming height to the index at which it become larger        
+        //Finally our stack might left with the elements, and pop them out and calculate the area  till end of the list and mostly they will be in incr order        
+        //Yes it a hard problem
+        
+       
+            int maxArea = Int32.MinValue;
+
+            if (heights == null || heights.Length == 0)
+            {
+                return 0;
+            }
+            Stack<KeyValuePair<int, int>> stack = new Stack<KeyValuePair<int, int>>();
+            KeyValuePair<int, int> kvp;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                int height = heights[i];
+                int startIndex = i;
+
+                while (stack.Count() > 0 && stack.Peek().Value > height)
+                {
+                    kvp = stack.Pop();
+                    maxArea = Math.Max(maxArea, kvp.Value * (i - kvp.Key));
+                    startIndex = kvp.Key;// we can use the widht by going backwards
+
+                }
+
+                //normal case
+                stack.Push(new KeyValuePair<int, int>(startIndex, height));
+            }
+
+            int len = heights.Length;
+            while (stack.Count() > 0)
+            {
+                kvp = stack.Pop();
+                maxArea = Math.Max(maxArea, (kvp.Value * (len - kvp.Key)));
+            }
+            return maxArea;
+
+        
+    }
+}

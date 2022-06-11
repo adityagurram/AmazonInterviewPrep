@@ -1,0 +1,34 @@
+public class Solution {
+    public int SubarraySum(int[] nums, int k) {
+        
+        //The idea here is 
+        //having a running sum and store the counts of that sum in a hashmap
+        //whenever we see sum-k value already in the hashmap like a 2 sum prob, add that sum-k frequ to the result
+        //[1 -1 1 1 1] we can split this in 2 ways consider k=2, one is 111 is subarray, or [1 -1 1 1 1] whole itself
+        int result=0;
+        
+        Dictionary<int, int> dict= new Dictionary<int, int> ();
+        dict.Add (0,1);
+        int sum=0;
+        foreach (int num in nums)
+        {
+            sum+= num;
+            
+            if(dict.ContainsKey(sum-k))//since we are taking running sum so it will be contigous 
+            {
+                result = result + dict[sum-k];
+            }
+            
+            if(!dict.ContainsKey(sum))
+            {
+                dict.Add (sum, 1);
+            }
+            else
+            {
+                dict[sum]++;
+            }
+        }
+        
+        return result;
+    }
+}

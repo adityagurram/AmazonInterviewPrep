@@ -1,0 +1,60 @@
+public class Solution {
+    public IList<string> FindAllConcatenatedWordsInADict(string[] words) {
+          List<string> result= new List<string>();
+        if(words==null ||words.Length ==0)
+        {
+               return result;
+        }
+     
+        //we will use the word break algo to identify whether we can break it
+        //for that we need to play with the given words and see what can we pass to the wordBrk fun
+        
+        HashSet<string> set= new HashSet<string>();
+        foreach(string word in words)
+        {
+            set.Add (word);            
+        }
+        
+      
+        foreach (string word in words)
+        {
+            set.Remove (word);
+            
+       
+           if( CanBreak (set, word))
+           {
+               result.Add (word);
+           }
+            
+            set.Add (word);
+        }
+        
+        
+        return result;
+        
+    }
+    
+    private bool CanBreak(HashSet<string> dict, string word)
+    {
+        if(word.Length ==0 || dict.Count ()==0)
+        {
+            return false;
+        }
+        int len= word.Length;
+        bool [] table = new bool [len +1];
+        table [0]=true;
+        
+        for(int i=1; i<=len; i++)
+        {
+            for(int lastWordLen=1; lastWordLen<=i; lastWordLen++)
+            {
+                if(dict.Contains (word.Substring (i-lastWordLen, lastWordLen)) && table [i-lastWordLen]==true)
+                {
+                    table [i]=true;
+                }
+            }
+        }
+        
+        return table [len];
+    }
+}

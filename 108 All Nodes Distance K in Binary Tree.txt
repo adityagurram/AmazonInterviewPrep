@@ -1,0 +1,98 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+
+    public IList<int> DistanceK(TreeNode root, TreeNode target, int k) {
+       
+         //The algo here is to assume the tree is like a graph
+            //But we dont have adj list of edges so we need to make a hashmap that holds the parent child relationship
+            //Using DFS identifiy parents and child and save it in HashMap
+            //Then using regular BFS , find the nodes that are distance k from target node.
+            //so the queue first element should be targetnode and start branching out from that place
+            //SInce this is like a graph prob, we dont have visist the nodes again and again. Better to have HashSet visisted
+            Dictionary<TreeNode, TreeNode> dict = new Dictionary<TreeNode, TreeNode>();
+
+            dfs_helper(root, null, dict);
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            HashSet<TreeNode> visited = new HashSet<TreeNode>();
+            queue.Enqueue(target);
+            visited.Add(target);
+            int distance = 0;
+            List<int> result = new List<int>();
+            while (queue.Count() > 0)
+            {
+                int queueCount = queue.Count();
+
+                for (int i = 0; i < queueCount; i++)
+                {
+                    TreeNode node = queue.Dequeue();
+
+                    if (distance == k)
+                    {
+                        result.Add(node.val);
+                    }
+                    if (node.left != null)
+                    {
+                        if (!visited.Contains(node.left))
+                        {
+                            queue.Enqueue(node.left);
+                            visited.Add(node.left);
+                        }
+                    }
+
+
+                    if (node.right != null)
+                    {
+
+                        if (!visited.Contains(node.right))
+                        {
+                            queue.Enqueue(node.right);
+                            visited.Add(node.right);
+                        }
+                    }
+
+
+                    if (dict.ContainsKey(node))
+                    {
+
+                        if (!visited.Contains(dict[node]))
+                        {
+                            queue.Enqueue(dict[node]);
+                            visited.Add(dict[node]);
+                        }
+
+                    }
+                    
+                }
+                distance++;
+
+            }
+            return result;
+    }
+        
+        
+    
+    private void dfs_helper(TreeNode current, TreeNode parent, Dictionary<TreeNode, TreeNode> dict)
+        {
+            if (current == null)
+            {
+                return;
+            }
+            if (parent != null)
+            {
+                dict.Add(current, parent);
+            }
+            dfs_helper(current.left, current, dict);
+            dfs_helper(current.right, current, dict);
+
+        }
+    
+  
+}

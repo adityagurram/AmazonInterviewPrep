@@ -1,0 +1,106 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<int> result= new List<int>();
+    public IList<int> BoundaryOfBinaryTree(TreeNode root) {
+            
+        
+        //The logic is we need to call 3 funcs to perform left boundary, leaf boundat and right boundary (print after returning)
+        
+        if(root==null)
+        {
+            return result;
+        }
+        result.Add (root.val);
+        if(root.left==null && root.right ==null)
+        {             
+             return result;
+        }
+        
+        if(root.left!=null)
+        left_boundary(root.left);
+        
+        
+        leaf_helper(root);
+        
+        if(root.right !=null)
+         right_boundary(root.right);
+        
+        
+     return result;   
+    }
+    
+    private void left_boundary(TreeNode root)
+    {
+        if(root==null)
+        {
+             return;
+        }
+        
+        if(root.left !=null)
+        {
+            result.Add (root.val);
+            left_boundary(root.left);
+        }
+        else if (root.right !=null)// I am writing else if there is left go only left (no right).
+        {
+               result.Add (root.val);
+               left_boundary(root.right);
+        }
+    }
+    
+     private void right_boundary(TreeNode root)
+    {
+        if(root==null)
+        {
+             return;
+        }
+        
+        if(root.right !=null)
+        {          
+              right_boundary(root.right);
+              result.Add (root.val);
+        }
+        else if (root.left !=null)// I am writing else if there is right go only right (no left).
+        {          
+               right_boundary(root.left);
+                result.Add (root.val);//I am adding after visiting all right boundary elements 
+        }
+    }
+    
+    
+    private void leaf_helper (TreeNode root)
+    {
+        if(root==null)
+        {
+             return;
+        }
+        
+        if(root.left!=null)
+        {
+            leaf_helper (root.left);
+        }
+        
+        if(root.left==null && root.right ==null)
+        {
+            result. Add (root.val);
+        }
+        
+         if(root.right!=null)
+        {
+            leaf_helper (root.right);
+        }
+    }
+    
+}
