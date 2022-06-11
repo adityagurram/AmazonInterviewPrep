@@ -1,0 +1,52 @@
+public class Solution {
+    public int LongestSubarray(int[] nums, int limit) {
+        
+        LinkedList<int> decreasingStack= new LinkedList<int> ();
+        LinkedList<int> increasingStack= new LinkedList<int> ();
+        
+        int max=0;
+        
+        int start=0;
+        
+        for(int end=0; end< nums.Length ; end++)
+        {
+            
+            while (decreasingStack.Any() && nums[end] >  decreasingStack.Last.Value)
+            {
+                decreasingStack.RemoveLast();
+            }
+            
+            while (increasingStack.Any() && nums[end] < increasingStack.Last.Value )
+            {
+                increasingStack.RemoveLast();
+            }
+            
+            decreasingStack.AddLast(nums[end]);
+            increasingStack.AddLast(nums[end]);
+            
+            
+            while (Math.Abs(decreasingStack.First.Value - increasingStack.First.Value) > limit)
+            {
+              
+                
+                    if(decreasingStack.First.Value== nums[start])
+					{
+                        decreasingStack.RemoveFirst();
+                    }
+
+                    if (increasingStack.First.Value == nums[start])
+                    {
+                        increasingStack.RemoveFirst();
+                    }
+
+
+          
+                  start++;
+              
+            }
+              max= Math.Max (max, end- start +1);
+        }
+                   
+    return max;
+    }
+}
